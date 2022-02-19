@@ -45,4 +45,14 @@ export default {
         background-position: center;
         transition: all 0.3s ease;
     }
+    .poster__page__bg::before {
+        position: absolute;
+        content: '';
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-image: linear-gradient( rgb(0, 3, 38) 0%, rgb(82, 15, 117) 100%);
+        opacity: 0.6;
+    }
 </style>

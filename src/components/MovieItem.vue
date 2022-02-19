@@ -20,28 +20,52 @@
             </div>
             <div class="movie__items__control row no-gutters">
                 <div class="col">
-                    <b-button class="" size="md" block variant="outline-light">
-                        Edit
+                    <b-button 
+                        @click="onShowModalInfo"
+                        class="control__btn" 
+                        size="md" 
+                        block variant="outline-light">
+                        Info
                     </b-button>
                 </div>
                  <div class="col">
-                    <b-button class="" size="md" block variant="outline-light">
+                    <b-button 
+                        class="control__btn" 
+                        size="md" 
+                        block variant="outline-light"
+                        @click="emitRemoveMovie"
+                    >
                         Remove
                     </b-button>
                 </div>
             </div>
-        <!-- Movie {{movie.title}} -->
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 export default {
     name: 'MovieItem',
     props: {
         movie:{
             type: Object,
             required: true,
+        }
+    },
+    methods: {
+        ...mapActions({
+            infoMovies: 'movies/infoMovies'
+        }),
+        ...mapMutations({
+            setIdInfo: 'movies/setIdInfo'
+        }),
+        async onShowModalInfo() {
+            this.setIdInfo(this.movie.id);
+            this.infoMovies(this.movie.id)
+            await this.$bvModal.show('modal-xl', this.movie.id);
+        },
+        emitRemoveMovie() {
+            this.$emit("removeItem", {id: this.movie.id, title: this.movie.title})
         }
     },
     computed: {
@@ -125,6 +149,11 @@ export default {
             margin-top: -3px;
             width: 35px;
         }
+        &:active {
+            img{
+                transform: scale(1.2); 
+            }
+        }   
     }
     .movie__items__control {
         position: absolute;
@@ -136,6 +165,10 @@ export default {
             min-width: 100px;
             background-color: rgba(0, 0, 0, 0.72);
             color: white;
+            &:active {
+            background-color: rgba(0, 0, 0, 0.864);
+            transform: scale(0.95);
+            }
         }
     }
 </style>
